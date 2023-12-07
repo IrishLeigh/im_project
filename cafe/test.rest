@@ -1,0 +1,111 @@
+@host = http://127.0.0.1:5000
+
+
+### Create a new item
+POST {{host}}/orders
+Content-Type: application/json
+
+{
+  
+  "customerId": 2,
+    "fName": "Reina",
+    "lName": "Empleo",
+    "orderDate": "04/12/2023",
+    "orderDetailId": 1,
+    "orderTime": "11:35",
+    "productId": 2,
+    "quantity": 5,
+    "tblNum": "4"
+}
+
+
+### Read the list
+GET {{host}}/orders
+Content-Type: application/json
+
+
+### Read a single item by id
+###Read a single OrderId with multiple products
+GET {{host}}/orders/1
+Content-Type: application/json
+
+
+### Update an item
+PUT {{host}}/orders/29
+Content-Type: application/json
+
+{
+    "orderDate": "04/12/2023",
+    "orderTime": "11:35",
+    "productId": 2,
+    "quantity": 1
+}
+
+
+
+### Delete an item
+DELETE {{host}}/orders/6
+Content-Type: application/json
+
+
+#PRODUCTS
+
+
+### Create a new item
+POST {{host}}/cafe/customer
+Content-Type: application/json
+
+{
+    "description": "Espresso with water",
+    "price": "50",
+    "productName": "Americano"
+}
+
+
+### Read the list
+GET {{host}}/cafe/customer
+Content-Type: application/json
+
+
+### Read a single item by id
+GET {{host}}/cafe/menu/4
+Content-Type: application/json
+
+
+### Update an item
+PUT {{host}}/cafe/menu/7
+Content-Type: application/json
+
+{
+    "description": "Smooth espresso combined with steamed milk and a hint of sweet vanilla syrup.",
+    "price": "39",
+    "productName": "Vanilla Latte"
+}
+
+### Delete an item
+DELETE {{host}}/cafe/menu/9
+Content-Type: application/json
+
+
+
+
+#PAYMENT
+
+
+### Create a new item
+POST {{host}}/payment
+Content-Type: application/json
+
+{
+  "orderId": 3  
+}
+
+
+### Read the list
+GET {{host}}/payment
+Content-Type: application/json
+
+
+### Read a single item by id
+GET {{host}}/payment/1
+Content-Type: application/json
