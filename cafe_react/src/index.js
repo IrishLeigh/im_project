@@ -4,11 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ViewTable from './components/table';
-
+import ResponsiveAppBar from './CustomerPage';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ViewTable />
+    <ResponsiveAppBar />
   </React.StrictMode>
 );
 

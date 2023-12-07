@@ -39,10 +39,10 @@ export default function ViewTable() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow sx={{ backgroundColor: '#C02147' }}>
-              <TableCell align="center" sx={{ color: 'white' }}>H1</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>H2</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>H3</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>H4</TableCell>
+              <TableCell align="center" sx={{ color: 'white' }}>Customer Id.</TableCell>
+              <TableCell align="center" sx={{ color: 'white' }}>Customer Name</TableCell>
+              <TableCell align="center" sx={{ color: 'white' }}>Table Number</TableCell>
+              <TableCell align="center" sx={{ color: 'white' }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -50,12 +50,10 @@ export default function ViewTable() {
               <TableRow key={row.customerId}>
                 <TableCell align="center">{row.customerId}</TableCell>
                 <TableCell component="th" scope="row" align="center">
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <Avatar alt={row.customerId} src="/static/images/avatar/2.jpg" sx={{ marginRight: '1rem' }} />
-                    <div>
+                  <div style={{ display: 'flex', align: 'center' }}>
                       {row.fName} {row.lName}
                     </div>
-                  </div>
+                 
                 </TableCell>
                 <TableCell align="center">{row.tblNum}</TableCell>
                 <TableCell align="center">
