@@ -56,10 +56,11 @@ POST {{host}}/cafe/customer
 Content-Type: application/json
 
 {
-    "description": "Espresso with water",
-    "price": "50",
-    "productName": "Americano"
-}
+    
+    "fName": "Irish",
+    "lName": "San Juan",
+    "tblNum": "4"
+  }
 
 
 ### Read the list
