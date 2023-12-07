@@ -1,0 +1,48 @@
+@host = http://127.0.0.1:5000
+
+
+### Create a new item
+POST {{host}}/orders
+Content-Type: application/json
+
+{
+  
+  "customerId": 2,
+    "fName": "Reina",
+    "lName": "Empleo",
+    "orderDate": "04/12/2023",
+    "orderDetailId": 1,
+    "orderTime": "11:35",
+    "productId": 2,
+    "quantity": 5,
+    "tblNum": "4"
+}
+
+
+### Read the list
+GET {{host}}/orders
+Content-Type: application/json
+
+
+### Read a single item by id
+###Read a single OrderId with multiple products
+GET {{host}}/orders/1
+Content-Type: application/json
+
+
+### Update an item
+PUT {{host}}/orders/6
+Content-Type: application/json
+
+{
+    "orderDate": "04/12/2023",
+    "orderTime": "11:35",
+    "productId": 2,
+    "quantity": 1
+}
+
+
+
+### Delete an item
+DELETE {{host}}/orders/6
+Content-Type: application/json
