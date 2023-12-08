@@ -12,7 +12,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuBar from './components/menuBar';
-import { Link } from "react-router-dom";  
 import {
   Paper,
   Table,
@@ -21,8 +20,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Menu
+  Menu,
 } from '@mui/material';
+
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -30,55 +30,94 @@ function ResponsiveAppBar() {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [menu, setMenu] = useState([]);
   const [customers, setCustomers] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editCustomer, setEditCustomer] = useState(null);
+  const [formState, setFormState] = useState({
+    firstName: '',
+    lastName: '',
+    tableNumber: '',
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    const firstName = e.target.firstName.value;
-    const tableNumber = e.target.tableNumber.value;
-    const lastName = e.target.lastName.value;
+    const { firstName, lastName, tableNumber } = formState;
   
     const newCustomer = { fName: firstName, lName: lastName, tblNum: tableNumber };
   
     try {
-      // Check if the table number is already taken
-      const existingCustomer = menu.find((customer) => customer.tblNum === tableNumber);
+      if (isEditing) {
+        // Check if the new table number is already taken by another customer
+        const existingCustomer = menu.find((customer) => customer.tblNum === tableNumber && customer.customerId !== editCustomer.customerId);
   
-      if (existingCustomer) {
-        // Table number is already taken, show an alert and don't proceed
-        alert(`Table ${tableNumber} is already taken. Please choose another table.`);
-        return;
+        if (existingCustomer) {
+          alert(`Table ${tableNumber} is already taken. Please choose another table.`);
+          return;
+        }
+  
+        // Make a PUT request to update the existing customer
+        const response = await fetch(`/cafe/customer/${editCustomer.customerId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newCustomer),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        // Assuming the update was successful, update the state
+        alert('Customer updated successfully');
+        setCustomers((prevCustomers) =>
+          prevCustomers.map((customer) =>
+            customer.customerId === editCustomer.customerId ? { ...customer, ...newCustomer } : customer
+          )
+        );
+      } else {
+        // Check if the table number is already taken for a new customer
+        const existingCustomer = menu.find((customer) => customer.tblNum === tableNumber);
+        if (existingCustomer) {
+          alert(`Table ${tableNumber} is already taken. Please choose another table.`);
+          return;
+        }
+  
+        // Make a POST request to add a new customer
+        const response = await fetch('/cafe/customer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newCustomer),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        const data = await response.json();
+  
+        // Assuming the response contains the newly created customer data
+        // Update the state or perform any necessary actions with the data
+        alert('Successfully added a customer');
+        setCustomers([...customers, data]);
       }
-  
-      // Make a POST request to add a new customer
-      const response = await fetch("/cafe/customer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newCustomer),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-  
-      // Assuming the response contains the newly created customer data
-      // Update the state or perform any necessary actions with the data
-      alert("Successfully added a customer");
-      setCustomers([...customers, data]);
-      window.location.reload(); // reload the entire page
     } catch (error) {
-      console.error("Error adding customer:", error);
+      console.error('Error handling submit:', error);
     }
   
-    // Clear the form
-    e.target.reset();
+    // Clear the form and reset editing state
+    setFormState({
+      firstName: '',
+      lastName: '',
+      tableNumber: '',
+    });
+    setIsEditing(false);
+    setEditCustomer(null);
   };
   
-  
+
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -96,8 +135,8 @@ function ResponsiveAppBar() {
 
   useEffect(() => {
     window.scroll(0, 0);
-  
-    fetch("/cafe/customer")
+
+    fetch('/cafe/customer')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -112,10 +151,10 @@ function ResponsiveAppBar() {
         console.error('Error fetching data:', error);
       });
   }, []);
-  
+
   const handleDeleteConfirmation = (customerId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this customer?");
-    
+    const confirmDelete = window.confirm('Are you sure you want to delete this customer?');
+
     if (confirmDelete) {
       // User confirmed, proceed with the delete request
       deleteCustomer(customerId);
@@ -124,26 +163,35 @@ function ResponsiveAppBar() {
   const deleteCustomer = async (customerId) => {
     try {
       const response = await fetch(`/cafe/customer/${customerId}`, {
-        method: "DELETE",
+        method: 'DELETE',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
       });
-  
+
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-  
+
       // Assuming the delete was successful, update both states
-      alert("Customer deleted successfully");
+      alert('Customer deleted successfully');
       setMenu(menu.filter((customer) => customer.customerId !== customerId));
       setCustomers(customers.filter((customer) => customer.customerId !== customerId));
     } catch (error) {
-      console.error("Error deleting customer:", error);
+      console.error('Error deleting customer:', error);
     }
   };
-  
-    
+  const handleEditCustomer = (customer) => {
+    setIsEditing(true);
+    setEditCustomer(customer);
+
+    // Populate the form fields with customer information
+    setFormState({
+      firstName: customer.fName,
+      lastName: customer.lName,
+      tableNumber: customer.tblNum,
+    });
+  };
 
   return (
     <Box sx={{ background: '#A07344', minHeight: '100vh' }}>
@@ -264,37 +312,42 @@ function ResponsiveAppBar() {
         <form onSubmit={handleSubmit}>
           <label>
             First Name:
-            <input type="text" name="firstName" required />
+            <input
+              type="text"
+              name="firstName"
+              value={isEditing ? formState.firstName : ''}
+              onChange={(e) => setFormState({ ...formState, firstName: e.target.value })}
+              required
+              disabled={isEditing}
+            />
           </label>
           <label>
             Last Name:
-            <input type="text" name="lastName" required />
+            <input
+              type="text"
+              name="lastName"
+              value={isEditing ? formState.lastName : ''}
+              onChange={(e) => setFormState({ ...formState, lastName: e.target.value })}
+              required
+              disabled={isEditing}
+            />
           </label>
           <label>
             Table Number:
-            <input type="number" name="tableNumber" required />
+            <input
+              type="number"
+              name="tableNumber"
+              value={isEditing ? formState.tableNumber : ''}
+              onChange={(e) => setFormState({ ...formState, tableNumber: e.target.value })}
+              required
+              
+            />
           </label>
           
-          <button type="submit">Add Customer</button>
+          <button type="submit">{isEditing ? 'Update Customer' : 'Add Customer'}</button>
         </form>
-        <table>
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Table Number</th>
-              <th>Last Name</th>
-            </tr>
-          </thead>
-          <tbody>
-            {customers.map((customer, index) => (
-              <tr key={index}>
-                <td>{customer.firstName}</td>
-                <td>{customer.tableNumber}</td>
-                <td>{customer.lastName}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+
+        
       </div>
       {/* Input Custoemr Ends Here */}
       <TableContainer component={Paper}>
@@ -319,7 +372,7 @@ function ResponsiveAppBar() {
                 </TableCell>
                 <TableCell align="center">{row.tblNum}</TableCell>
                 <TableCell align="center">
-                  <Button>Edit</Button>
+                  <Button onClick={() => handleEditCustomer(row)}>Edit</Button>
                   <Button onClick={() => handleDeleteConfirmation(row.customerId)}>Delete</Button>
                   <Button>Order</Button>
                 </TableCell>
@@ -337,9 +390,9 @@ function ResponsiveAppBar() {
       </div>
       </Container>
       {/* Table Ends Here */}
-                
-      
     </Box>
+
+
   );
 }
 export default ResponsiveAppBar;
