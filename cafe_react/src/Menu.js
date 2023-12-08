@@ -12,7 +12,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuBar from './components/menuBar';
-import { Link } from "react-router-dom";
 import {
   Paper,
   Table,
@@ -26,7 +25,7 @@ import {
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-function ResponsiveAppBar() {
+function Products() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [menu, setMenu] = useState([]);
@@ -215,7 +214,7 @@ function ResponsiveAppBar() {
                 textDecoration: 'none',
               }}
             >
-              CUSTOMERS
+              MENU
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -396,4 +395,4 @@ function ResponsiveAppBar() {
 
   );
 }
-export default ResponsiveAppBar;
+export default Products;
