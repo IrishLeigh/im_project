@@ -1,0 +1,41 @@
+.coffeeline {
+    background-color: #C7A17A;
+    width: 100%;
+    height: 3px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+   
+}
+.coffeeNames{
+    color: #FFFFFF;
+    text-align: left;
+    max-height: max-content;
+    margin-left: 80px;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    margin-top: 80px;
+    font-size: 17px;
+    max-width: 40%;
+}
+.item {
+    align-items: center;
+    display: flex;
+}
+.coffeeDesc{
+    color:#C7A17A;
+}
+.coffeeName{
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+.coffeePrice{
+    font-weight: bold;
+}
+.imgCoffee{
+    width: 20%;
+    height:fit-content;
+    object-fit:scale-down;
+    overflow: hidden;
+    margin-bottom: 5px;
+    margin-top: 50px;
+    margin-left: 50px;
+}

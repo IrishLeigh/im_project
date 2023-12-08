@@ -1,0 +1,23 @@
+.designline {
+    background-color: #C7A17A;
+    width: 20%;
+    height: 3px;  
+    display: flex;
+    align-items: center;
+    transform: translateX(200%);
+
+}
+.menuTitle{
+    color: #FFFFFF;
+    font-size: 20px;
+    padding: 5px;
+
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    display: block;
+    text-align: center;
+    align-items: center;
+}
+body{
+background-repeat: no-repeat;
+max-height: min-content;
+}
