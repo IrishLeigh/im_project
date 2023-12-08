@@ -1,0 +1,34 @@
+/* styles.css */
+
+.menubar {
+    margin-top: 64px; /* adjust margin according to header*/
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #C7A17A;
+    padding-top: 20px;
+  }
+  
+  .menubar-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #C7A17A;
+    color: white;
+    border: none;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-size: 18px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    padding-left: 50px;
+    word-spacing: 20px;
+  }
+  
+  .menubar-btn:hover {
+    background-color: #A07344;
+  }
+  

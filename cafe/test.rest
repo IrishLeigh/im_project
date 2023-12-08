@@ -56,10 +56,11 @@ POST {{host}}/cafe/customer
 Content-Type: application/json
 
 {
-    "description": "Espresso with water",
-    "price": "50",
-    "productName": "Americano"
-}
+    
+    "fName": "Irish",
+    "lName": "San Juan",
+    "tblNum": "4"
+  }
 
 
 ### Read the list
@@ -77,10 +78,12 @@ PUT {{host}}/cafe/menu/7
 Content-Type: application/json
 
 {
-    "description": "Smooth espresso combined with steamed milk and a hint of sweet vanilla syrup.",
-    "price": "39",
-    "productName": "Vanilla Latte"
-}
+    
+    "fName": "Irish",
+    "lName": "San Juan",
+    "tblNum": "4"
+  }
+
 
 ### Delete an item
 DELETE {{host}}/cafe/menu/9
