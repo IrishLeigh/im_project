@@ -362,23 +362,25 @@ function ResponsiveAppBar() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {menu.map((row,key) => (
-              <TableRow key={row.customerId}>
-                <TableCell align="center">{row.customerId}</TableCell>
-                <TableCell component="th" scope="row" align="center">
-                  <div style={{ display: 'flex', align: 'center' }}>
-                      {row.fName} {row.lName}
-                    </div>
-                 
-                </TableCell>
-                <TableCell align="center">{row.tblNum}</TableCell>
-                <TableCell align="center">
-                  <Button onClick={() => handleEditCustomer(row)}>Edit</Button>
-                  <Button onClick={() => handleDeleteConfirmation(row.customerId)}>Delete</Button>
+          {menu.map((row, key) => (
+            <TableRow key={row.customerId}>
+              <TableCell align="center">{row.customerId}</TableCell>
+              <TableCell component="th" scope="row" align="center">
+                <div style={{ display: 'flex', align: 'center' }}>
+                  {row.fName} {row.lName}
+                </div>
+              </TableCell>
+              <TableCell align="center">{row.tblNum}</TableCell>
+              <TableCell align="center">
+                <Button onClick={() => handleEditCustomer(row)}>Edit</Button>
+                <Button onClick={() => handleDeleteConfirmation(row.customerId)}>Delete</Button>
+                <Link to={`/Menu/${row.customerId}`}>
                   <Button>Order</Button>
-                </TableCell>
-              </TableRow>
-            ))}
+                </Link>
+              </TableCell>
+            </TableRow>
+          ))}
+
           </TableBody>
         </Table>
       </TableContainer>

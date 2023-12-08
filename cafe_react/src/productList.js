@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid } from '@mui/material';
 import './product.css';
 import TheCoffee from './components/coffee';
@@ -22,6 +22,28 @@ const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const MenuCoffee = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+     window.scroll(0, 0);
+ 
+     fetch('/cafe/menu')
+       .then((response) => {
+         if (!response.ok) {
+           throw new Error(`HTTP error! Status: ${response.status}`);
+         }
+         return response.json();
+       })
+       .then((data) => {
+          setProducts(data);
+        
+       })
+       .catch((error) => {
+         console.error('Error fetching data:', error);
+       });
+   }, []);
+
+ 
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -40,38 +62,40 @@ const MenuCoffee = () => {
   };
 
   const drinkData = [
-    {
-      name: "Caffee Latte",
-      desc: "Fresh brewed espresso and steamed milk",
-      price: 120,
-      image: "/caffe_latte.jpg", // Adjust the image path accordingly
-    },
-    {
-      name: "Caffee Mocha",
-      desc: "Espresso, chocolate, steamed milk, whipped cream",
-      price: 120,
-      image: "/caffe_mocha.jpg", // Adjust the image path accordingly
-    },
-    {
-      name: "CAPPUCCINO",
-      desc: "Espresso, and smoothed Layer of Foam",
-      price: 120,
-      image: "/cappuccino.jpg", // Adjust the image path accordingly
-    },
-    {
-      name: "Caramel Macchiato",
-      desc: "Espresso, steamed milk, vanilla, and caramel syrup",
-      price: 120,
-      image: "/caramel_macchiato.jpg", // Adjust the image path accordingly
-    },
-    {
-      name: "Cold Brew",
-      desc: "Smooth coffee brewed with cold water, served over ice and milk.",
-      price: 120,
-      image: "/cold_brew.jpg", // Adjust the image path accordingly
-    },
-  ];
+//     {
 
+
+//       name: "Caffee Latte",
+//       desc: "Fresh brewed espresso and steamed milk",
+//       price: 120,
+//       image: "/caffe_latte.jpg", // Adjust the image path accordingly
+//     },
+//     {
+//       name: "Caffee Mocha",
+//       desc: "Espresso, chocolate, steamed milk, whipped cream",
+//       price: 120,
+//       image: "/caffe_mocha.jpg", // Adjust the image path accordingly
+//     },
+//     {
+//       name: "CAPPUCCINO",
+//       desc: "Espresso, and smoothed Layer of Foam",
+//       price: 120,
+//       image: "/cappuccino.jpg", // Adjust the image path accordingly
+//     },
+//     {
+//       name: "Caramel Macchiato",
+//       desc: "Espresso, steamed milk, vanilla, and caramel syrup",
+//       price: 120,
+//       image: "/caramel_macchiato.jpg", // Adjust the image path accordingly
+//     },
+//     {
+//       name: "Cold Brew",
+//       desc: "Smooth coffee brewed with cold water, served over ice and milk.",
+//       price: 120,
+//       image: "/cold_brew.jpg", // Adjust the image path accordingly
+//     },
+  ];
+console.log(products)
   return (
     <>
       <AppBar position="static" sx={{ background: '#30271C' }}>
@@ -149,11 +173,11 @@ const MenuCoffee = () => {
           </div>
 
           <Grid container spacing={2}>
-            {drinkData.map((drink, index) => (
+            {products.map((drink, index) => (
               <Grid item xs={12} sm={6} md={4} lg={6} key={index} className='item'>
                 <TheCoffee
-                  name={drink.name}
-                  desc={drink.desc}
+                  name={drink.productName}
+                  desc={drink.description}
                   price={drink.price}
                   image={drink.image}
                 />

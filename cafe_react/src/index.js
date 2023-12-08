@@ -14,7 +14,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/Customers" element={<ResponsiveAppBar />} /> {/* Render ResponsiveAppBar on the landing page */}
-        <Route path="/Menu" element={<MenuCoffee />} />
+        <Route path="/Menu/:customerId" element={<MenuCoffee />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
