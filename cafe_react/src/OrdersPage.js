@@ -39,7 +39,7 @@ function Orders() {
     productName: '', // Add these fields
     quantity: '',
     orderTime:'', // Add these fields
-    statu:''
+    status:''
   });
   
 
@@ -89,8 +89,56 @@ function Orders() {
       quantity: order.quantity,
     });
   };
-
+  const handleUpdate = async () => {
+    try {
+      // Validate form fields
+      if (!formState.productId || !formState.quantity) {
+        alert('Please fill in all required fields.');
+        return;
+      }
   
+      const updatedOrder = {
+        productId: formState.productId,
+        quantity: formState.quantity,
+        // Add any additional fields here
+      };
+  
+      // Make a PUT request to update the existing order
+      const response = await fetch(`/orders/${editOrder.orderId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedOrder),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      // Assuming the update was successful, update the state
+      alert('Order updated successfully');
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.orderId === editOrder.orderId ? { ...order, ...updatedOrder } : order
+        )
+      );
+  
+      // Clear the form and reset editing state
+      setFormState({
+        productId: '',
+        productName: '',
+        quantity: '',
+        orderTime: '',
+        orderDate: '',
+        status: '',
+      });
+      setEditOrder(null);
+    } catch (error) {
+      console.error('Error handling update:', error);
+    }
+  };
+
 console.log(orders)
   return (
     <Box sx={{ background: '#A07344', minHeight: '100vh' }}>
@@ -224,6 +272,7 @@ console.log(orders)
                 setFormState({ ...formState, firstName, lastName });
               }}
               required
+              disabled={true}
             />
           </label>
           <label>
@@ -234,6 +283,7 @@ console.log(orders)
               value={formState.tableNumber}  // Change here
               onChange={(e) => setFormState({ ...formState, lastName: e.target.value })}
               required
+              disabled={true}
             />
           </label>
           <label>
@@ -256,34 +306,26 @@ console.log(orders)
               
             />
           </label>
-          <label>
-           Time
-            <input
-              type="number"
-              value={formState.orderTime}  // Change here
-              onChange={(e) => setFormState({ ...formState, quantity: e.target.value })}
-              required
-              
-            />
-          </label>
           
-          <button type="submit">Update Order</button>
+          <button onClick={handleUpdate}>Update Order</button>
+
         </form>
 
         
       </div>
       {/* Input Custoemr Ends Here */}
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 850 }} aria-label="simple table">
+        <Table sx={{ minWidth: 550 }} aria-label="simple table">
           <TableHead>
             <TableRow sx={{ backgroundColor: '#C02147' }}>
               <TableCell align="center" sx={{ color: 'white' }}>Order Id.</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}>Customer Name</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}>Table Number</TableCell>
+              <TableCell align="center" sx={{ color: 'white' }}>Time</TableCell>
+              <TableCell align="center" sx={{ color: 'white' }}>Date</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}>Product ID</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}>Product Name</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}>Quantity</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Time</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}>Status</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}></TableCell>
             </TableRow>
@@ -298,17 +340,16 @@ console.log(orders)
                 </div>
               </TableCell>
               <TableCell align="center">{row.tblNum}</TableCell>
+              <TableCell align="center">{row.orderTime}</TableCell>
+              <TableCell align="center">{row.orderDate}</TableCell>
               <TableCell align="center">{row.productId}</TableCell>
               <TableCell align="center">{row.productName}</TableCell>
               <TableCell align="center">{row.quantity}</TableCell>
-              <TableCell align="center">{row.orderTime}</TableCell>
               <TableCell align="center">{row.status}</TableCell>
               <TableCell align="center">
                 <Button onClick={() => handleEditOrder(row)}>Edit</Button>
                 <Button >Delete</Button>
-                <Link to={`/Menu/${row.customerId}`}>
-                  <Button>Order</Button>
-                </Link>
+                <Button>Serve Now</Button>
               </TableCell>
             </TableRow>
           ))}

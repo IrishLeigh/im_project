@@ -205,11 +205,21 @@ def get_order_by_id(id):
 
 
 def update_order(id, data):
-    cur = execute("""CALL UpdateOrder(%s, %s, %s, %s, %s)""",
+    cur = execute("""CALL UpdateOrder(%s, %s, %s)""",
                    (
                     id,
-                   data["orderDate"],
-                   data["orderTime"],
+                   data["productId"],
+                   data["quantity"]
+                   ))
+ 
+    row = cur.fetchone()
+    data["id"] = row["orderId"]
+    return data
+
+def update_orderStatus(id, data):
+    cur = execute("""CALL UpdateOrder(%s, %s, %s)""",
+                   (
+                    id,
                    data["productId"],
                    data["quantity"]
                    ))

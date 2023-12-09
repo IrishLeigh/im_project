@@ -30,10 +30,15 @@ PUT {{host}}/orders/29
 Content-Type: application/json
 
 {
-    "orderDate": "04/12/2023",
-    "orderTime": "11:35",
     "productId": 2,
     "quantity": 1
+}
+### Update an item's status
+PUT {{host}}/orders/status/29
+Content-Type: application/json
+
+{
+    "status": "Served"
 }
 
 
@@ -78,6 +83,7 @@ Content-Type: application/json
     "lName": "San Juan",
     "tblNum": "4"
   }
+  
 
 
 ### Delete an item

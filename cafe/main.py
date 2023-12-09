@@ -51,6 +51,24 @@ def users_by_id(id):
 if __name__ == "__main__":
     app.run(debug=True)
 
+@app.route("/orders/status/<id>", methods=["GET", "PUT", "DELETE"])
+def users_by_id(id):
+  if request.method == "PUT":
+    data = request.get_json()
+    result = update_order(id, data)
+  elif request.method == "DELETE":
+    result = get_order_by_id(id)
+    if result is not None:
+      result = delete_order(id)
+    else:
+      result = {"error": "User not found"}
+  else:
+    result = get_order_by_id(id)
+  return jsonify(result)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
 #PAYMENT
 
 @app.route("/payment", methods=["GET", "POST"])
