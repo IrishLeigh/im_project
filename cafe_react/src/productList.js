@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import './product.css';
 import TheCoffee from './components/coffee';
@@ -23,43 +24,100 @@ const MenuCoffee = () => {
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
   const [products, setProducts] = useState([]);
+  const{ customerId } = useParams();
+
+  const fetchData = async () => {
+    try {
+      const apiUrl = '/cafe/menu';
+      const response = await fetch(apiUrl, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setProducts(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
 
   useEffect(() => {
-     window.scroll(0, 0);
- 
-     fetch('/cafe/menu')
-       .then((response) => {
-         if (!response.ok) {
-           throw new Error(`HTTP error! Status: ${response.status}`);
-         }
-         return response.json();
-       })
-       .then((data) => {
-          setProducts(data);
-        
-       })
-       .catch((error) => {
-         console.error('Error fetching data:', error);
-       });
-   }, []);
+    fetchData(); // Fetch data when the component mounts
+  }, []);
+  const handleCreateNewItem = async () => {
+    try {
+      const apiUrl = '/cafe/customer';
 
- 
+      const newItemData = {
+        // Your JSON data goes here
+        // Example:
+        firstName: 'John',
+        lastName: 'Doe',
+        // Add other properties as needed
+      };
+
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newItemData),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      console.log('New item created successfully:', responseData);
+    } catch (error) {
+      console.error('Error creating new item:', error);
+    }
+  };
+
+  const handleAddToOrder = async (data) => {
+    try {
+      console.log('Data before sending:', data);
+      const apiUrl = '/orders';
+  
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          customerId: customerId,  // Fix property name
+          orderDate: new Date().toISOString().split('T')[0],
+          orderTime: new Date().toLocaleTimeString(),
+          productId: data.productId,  // Fix property name
+          quantity: data.quantity,
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const responseData = await response.json();
+      alert('Item added to order successfully:', responseData);
+    } catch (error) {
+      console.log('Error adding item to order:', error);
+    }
+  };
+  
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
-
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
 
   const drinkData = [
 //     {
@@ -95,7 +153,8 @@ const MenuCoffee = () => {
 //       image: "/cold_brew.jpg", // Adjust the image path accordingly
 //     },
   ];
-console.log(products)
+
+
   return (
     <>
       <AppBar position="static" sx={{ background: '#30271C' }}>
@@ -162,24 +221,72 @@ console.log(products)
           </Toolbar>
         </Container>
       </AppBar>
-
       <MenuBar />
-
       <div className='menuBg' style={{ backgroundImage: 'url(/cafe_menu.png)' }}>
         <Container maxWidth="md" sx={{ mt: 2, ml: 2, marginLeft: "350px" }}>
           <div className='menuTitle'>
             <h2>Cafe Menu</h2>
             <div className='designline'></div>
           </div>
-
+          <form style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <label className="inputLabel">
+              Product ID:
+              <input
+                type="text"
+                name="pID"
+                className="inputField"
+              />
+            </label>
+            <label className="inputLabel">
+              Product Name:
+              <input
+                type="text"
+                name="pName"
+                className="inputField"
+              />
+            </label>
+            <label className="inputLabel">
+              Description:
+              <input
+                type="text"
+                name="desc"
+                className="inputField"
+              />
+            </label>
+            <label className="inputLabel">
+              Price:
+              <input
+                type="text"
+                name="price"
+                className="inputField"
+              />
+            </label>
+            <label className="inputLabel">
+              Image:
+              <input
+                type="text"
+                name="image"
+                className="inputField"
+              />
+            </label>
+            <button type="submit">Add Menu Item</button>
+            <button type="submit">Update an Item</button>
+          </form>
           <Grid container spacing={2}>
             {products.map((drink, index) => (
               <Grid item xs={12} sm={6} md={4} lg={6} key={index} className='item'>
                 <TheCoffee
-                  name={drink.productName}
-                  desc={drink.description}
+
+
+                  name = {drink.name}
+                  desc= {drink.description}
                   price={drink.price}
                   image={drink.image}
+                  cID={customerId}  // Add customer ID
+                  date={new Date().toISOString().split('T')[0]}  // Format the date
+                  time={new Date().toLocaleTimeString()}  // Format the time
+                  pID={drink.productId}
+                  onAddClick={handleAddToOrder}
                 />
               </Grid>
             ))}

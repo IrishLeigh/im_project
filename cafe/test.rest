@@ -6,16 +6,11 @@ POST {{host}}/orders
 Content-Type: application/json
 
 {
-  
-  "customerId": 2,
-    "fName": "Reina",
-    "lName": "Empleo",
+    "customerId": 4,
     "orderDate": "04/12/2023",
-    "orderDetailId": 1,
     "orderTime": "11:35",
     "productId": 2,
-    "quantity": 5,
-    "tblNum": "4"
+    "quantity": 5
 }
 
 

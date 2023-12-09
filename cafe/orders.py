@@ -168,17 +168,14 @@ END //
 DELIMITER ;
 """
 def create_order(data):
-    cur = execute("""CALL CreateOrder(%s, %s, %s, %s, %s, %s, %s, %s)""",
-    (
-            data["customerId"],
-            data["fName"],
-            data["lName"],
-            data["orderDate"],
-            data["orderTime"],
-            data["productId"],
-            data["quantity"],
-            data["tblNum"]
-        ))
+    cur = execute("""CALL CreateOrder(%s, %s, %s, %s, %s)""",
+(
+        data["customerId"],
+        data["orderDate"],
+        data["orderTime"],
+        data["productId"],
+        data["quantity"],
+    ))
 
     # Assuming you have a view or another way to retrieve the created order details
     row = cur.fetchone()
