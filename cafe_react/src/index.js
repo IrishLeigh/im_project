@@ -5,10 +5,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ViewTable from './components/table';
 import ResponsiveAppBar from './CustomerPage';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'; 
+import MenuCoffee from './productList';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ResponsiveAppBar />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/Customers" element={<ResponsiveAppBar />} /> {/* Render ResponsiveAppBar on the landing page */}
+        <Route path="/Menu/:customerId" element={<MenuCoffee />} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
