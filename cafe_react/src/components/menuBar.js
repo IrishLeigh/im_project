@@ -8,7 +8,7 @@ const MenuBar = () => {
     <div className="menubar">
       <Link><button className="menubar-btn">Customers</button></Link>
       <Link to={"/Menu"}><button className="menubar-btn">Menu</button></Link>
-      <button className="menubar-btn">Order</button>
+      <Link to={"/Orders"}><button className="menubar-btn">Orders</button></Link>
       <button className="menubar-btn">Payment</button>
     </div>
   );

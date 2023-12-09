@@ -7,6 +7,7 @@ import ViewTable from './components/table';
 import ResponsiveAppBar from './CustomerPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; 
 import MenuCoffee from './productList';
+import Orders from './OrdersPage'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,6 +16,7 @@ root.render(
       <Routes>
         <Route path="/Customers" element={<ResponsiveAppBar />} /> {/* Render ResponsiveAppBar on the landing page */}
         <Route path="/Menu/:customerId" element={<MenuCoffee />} />
+        <Route path="/Orders" element={<Orders />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
