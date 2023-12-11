@@ -12,7 +12,6 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuBar from './components/menuBar';
-import { Link } from "react-router-dom";
 import {
   Paper,
   Table,
@@ -26,23 +25,98 @@ import {
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
-function Orders() {
+function Payment() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [orders, setOrders] = useState([]);
-  const [editOrder, setEditOrder] = useState(null);
+  const [menu, setMenu] = useState([]);
+  const [customers, setCustomers] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editCustomer, setEditCustomer] = useState(null);
   const [formState, setFormState] = useState({
     firstName: '',
     lastName: '',
     tableNumber: '',
-    productId: '',  // Add these fields
-    productName: '', // Add these fields
-    quantity: '',
-    orderTime:'', // Add these fields
-    status:''
   });
-  
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const { firstName, lastName, tableNumber } = formState;
+  
+    const newCustomer = { fName: firstName, lName: lastName, tblNum: tableNumber };
+  
+    try {
+      if (isEditing) {
+        // Check if the new table number is already taken by another customer
+        const existingCustomer = menu.find((customer) => customer.tblNum === tableNumber && customer.customerId !== editCustomer.customerId);
+  
+        if (existingCustomer) {
+          alert(`Table ${tableNumber} is already taken. Please choose another table.`);
+          return;
+        }
+  
+        // Make a PUT request to update the existing customer
+        const response = await fetch(`/cafe/customer/${editCustomer.customerId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newCustomer),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        // Assuming the update was successful, update the state
+        alert('Customer updated successfully');
+        setCustomers((prevCustomers) =>
+          prevCustomers.map((customer) =>
+            customer.customerId === editCustomer.customerId ? { ...customer, ...newCustomer } : customer
+          )
+        );
+      } else {
+        // Check if the table number is already taken for a new customer
+        const existingCustomer = menu.find((customer) => customer.tblNum === tableNumber);
+        if (existingCustomer) {
+          alert(`Table ${tableNumber} is already taken. Please choose another table.`);
+          return;
+        }
+  
+        // Make a POST request to add a new customer
+        const response = await fetch('/cafe/customer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newCustomer),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        const data = await response.json();
+  
+        // Assuming the response contains the newly created customer data
+        // Update the state or perform any necessary actions with the data
+        alert('Successfully added a customer');
+        setCustomers([...customers, data]);
+      }
+    } catch (error) {
+      console.error('Error handling submit:', error);
+    }
+  
+    // Clear the form and reset editing state
+    setFormState({
+      firstName: '',
+      lastName: '',
+      tableNumber: '',
+    });
+    setIsEditing(false);
+    setEditCustomer(null);
+  };
+  
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -61,8 +135,8 @@ function Orders() {
 
   useEffect(() => {
     window.scroll(0, 0);
-  
-    fetch('/orders')
+
+    fetch('/payment')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -70,104 +144,55 @@ function Orders() {
         return response.json();
       })
       .then((data) => {
-        setOrders(data); // Update the orders state
+        setCustomers(data); // Update the customers state as well
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
   }, []);
-  const handleEditOrder = (order) => {
-    setEditOrder(order);
 
-    // Populate the form fields with order information
+  const handleDeleteConfirmation = (customerId) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this customer?');
+
+    if (confirmDelete) {
+      // User confirmed, proceed with the delete request
+      deleteCustomer(customerId);
+    }
+  };
+  const deleteCustomer = async (customerId) => {
+    try {
+      const response = await fetch(`/cafe/customer/${customerId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      // Assuming the delete was successful, update both states
+      alert('Customer deleted successfully');
+      setMenu(menu.filter((customer) => customer.customerId !== customerId));
+      setCustomers(customers.filter((customer) => customer.customerId !== customerId));
+    } catch (error) {
+      console.error('Error deleting customer:', error);
+    }
+  };
+  const handleEditCustomer = (customer) => {
+    setIsEditing(true);
+    setEditCustomer(customer);
+
+    // Populate the form fields with customer information
     setFormState({
-      firstName: order.fName,
-      lastName: order.lName,
-      tableNumber: order.tblNum,
-      productId: order.productId,
-      productName: order.productName,
-      quantity: order.quantity,
+      firstName: customer.fName,
+      lastName: customer.lName,
+      tableNumber: customer.tblNum,
     });
   };
-  const handleUpdate = async () => {
-    try {
-      // Validate form fields
-      if (!formState.productId || !formState.quantity) {
-        alert('Please fill in all required fields.');
-        return;
-      }
-  
-      const updatedOrder = {
-        productId: formState.productId,
-        quantity: formState.quantity,
-        // Add any additional fields here
-      };
-  
-      // Make a PUT request to update the existing order
-      const response = await fetch(`/orders/${editOrder.orderId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedOrder),
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-  
-      // Assuming the update was successful, update the state
-      alert('Order updated successfully');
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.orderId === editOrder.orderId ? { ...order, ...updatedOrder } : order
-        )
-      );
-  
-      // Clear the form and reset editing state
-      setFormState({
-        productId: '',
-        productName: '',
-        quantity: '',
-        orderTime: '',
-        orderDate: '',
-        status: '',
-      });
-      setEditOrder(null);
-    } catch (error) {
-      console.error('Error handling update:', error);
-    }
-  };
-  const handleServeNow = async (orderId) => {
-    try {
-      // Make a PUT request to update the status to "Served"
-      const response = await fetch(`/orders/status/${orderId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          status: 'Served',
-        }),
-      });
+console.log(customers)
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      // Assuming the update was successful, update the state
-      alert('Order served successfully');
-      setOrders((prevOrders) =>
-        prevOrders.map((order) =>
-          order.orderId === orderId ? { ...order, status: 'Served' } : order
-        )
-      );
-    } catch (error) {
-      console.error('Error serving order:', error);
-    }
-  };
-
-console.log(orders)
   return (
     <Box sx={{ background: '#A07344', minHeight: '100vh' }}>
       <AppBar position="static" sx={{ background: '#30271C' }}>
@@ -189,7 +214,7 @@ console.log(orders)
                 textDecoration: 'none',
               }}
             >
-              ORDERS
+              CUSTOMERS
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -283,105 +308,84 @@ console.log(orders)
       <Container maxWidth="md" sx={{ mt: 2, ml: 2 ,marginLeft:"350px"}}>
         {/* Input Customer Here */}
       <div>
-        <h1>Orders</h1>
-        <form onSubmit={(e) => {
-          e.preventDefault(); // Prevent default form submission
-          // Handle your form submission logic here, you can add the logic to update the order
-          // based on the form state or perform any other necessary actions.
-        }}>
+        <h1>Payment</h1>
+        <form onSubmit={handleSubmit}>
           <label>
-            Customer Name:
+            PaymentID:
             <input
-              type="text"
-              name="cName"
-              value={`${formState.firstName} ${formState.lastName}`}
-              onChange={(e) => {
-                const [firstName, lastName] = e.target.value.split(' ');
-                setFormState({ ...formState, firstName, lastName });
-              }}
+              type="number"
+              name="paymentId"
+              value={isEditing ? formState.paymentId : ''}
+              onChange={(e) => setFormState({ ...formState, paymentId: e.target.value })}
               required
-              disabled={true}
+              disabled={isEditing}
             />
           </label>
           <label>
-            Table Number:
+            OrderID:
             <input
               type="number"
-              name="tblNum"
-              value={formState.tableNumber}  // Change here
-              onChange={(e) => setFormState({ ...formState, lastName: e.target.value })}
+              name="orderId"
+              value={isEditing ? formState.orderId : ''}
+              onChange={(e) => setFormState({ ...formState, orderId: e.target.value })}
               required
-              disabled={true}
+              disabled={isEditing}
             />
           </label>
           <label>
-            Product ID:
+            Amount:
             <input
               type="number"
-              name="pid"
-              value={formState.productId}  // Change here
-              onChange={(e) => setFormState({ ...formState, productId: e.target.value })}
-              required
-            />
-          </label>
-          <label>
-           Quantity
-            <input
-              type="number"
-              value={formState.quantity}  // Change here
-              onChange={(e) => setFormState({ ...formState, quantity: e.target.value })}
+              name="amount"
+              value={isEditing ? formState.amount : ''}
+              onChange={(e) => setFormState({ ...formState, amount: e.target.value })}
               required
               
             />
           </label>
           
-          <button onClick={handleUpdate}>Update Order</button>
-
+          <button type="submit">{isEditing ? 'Update Payment' : 'Add Payment'}</button>
         </form>
 
         
       </div>
       {/* Input Custoemr Ends Here */}
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 550 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow sx={{ backgroundColor: '#C02147' }}>
-              <TableCell align="center" sx={{ color: 'white' }}>Order Id.</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Customer Name</TableCell>
+              <TableCell align="center" sx={{ color: 'white' }}>Payment Id.</TableCell>
+              <TableCell align="center" sx={{ color: 'white' }}>Customer Id.</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}>Table Number</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Time</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Date</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Product ID</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Product Name</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Quantity</TableCell>
+              <TableCell align="center" sx={{ color: 'white' }}>Order Id</TableCell>
+              <TableCell align="center" sx={{ color: 'white' }}>Amount</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}>Status</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-          {orders.map((row, key) => (
-            <TableRow key={row.orderId}>
-              <TableCell align="center">{row.orderId}</TableCell>
-              <TableCell component="th" scope="row" align="center">
-                <div style={{ display: 'flex', align: 'center' }}>
-                  {row.fName} {row.lName}
-                </div>
-              </TableCell>
-              <TableCell align="center">{row.tblNum}</TableCell>
-              <TableCell align="center">{row.orderTime}</TableCell>
-              <TableCell align="center">{row.orderDate}</TableCell>
-              <TableCell align="center">{row.productId}</TableCell>
-              <TableCell align="center">{row.productName}</TableCell>
-              <TableCell align="center">{row.quantity}</TableCell>
-              <TableCell align="center">{row.status}</TableCell>
-              <TableCell align="center">
-                <Button onClick={() => handleEditOrder(row)}>Edit</Button>
-                <Button >Delete</Button>
-                <Button onClick={() => handleServeNow(row.orderId)}>Serve Now</Button>
-              </TableCell>
-            </TableRow>
-          ))}
-
+            {customers.map((row,key) => (
+              <TableRow key={row.paymentId}>
+                <TableCell align="center">{row.paymentId}</TableCell>
+                <TableCell align="center">{row.customerId}</TableCell>
+                <TableCell align="center">{row.tblNum}</TableCell>
+                <TableCell align="center">{row.orderId}</TableCell>
+                <TableCell align="center">{row.amount}</TableCell>
+                <TableCell align="center">{row.status}</TableCell>
+                <TableCell component="th" scope="row" align="center">
+                  <div style={{ display: 'flex', align: 'center' }}>
+                      {row.fName} {row.lName}
+                    </div>
+                 
+                </TableCell>
+                <TableCell align="center">{row.tblNum}</TableCell>
+                <TableCell align="center">
+                  <Button onClick={() => handleEditCustomer(row)}>Edit</Button>
+                  <Button onClick={() => handleDeleteConfirmation(row.customerId)}>Delete</Button>
+                  <Button>Order</Button>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -399,4 +403,4 @@ console.log(orders)
 
   );
 }
-export default Orders;
+export default Payment;

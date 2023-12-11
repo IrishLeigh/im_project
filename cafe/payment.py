@@ -29,23 +29,10 @@ INNER JOIN
 """
 
 def create_payment(data):
-    print(data)
-    cur = execute("""CALL CreatePayment(%s)""", (data["orderId"],))
-
-    # Assuming you have a view or another way to retrieve the created payment details
-    result = fetchone("""
-        SELECT
-            p.paymentId,
-            p.orderId,
-            p.amount,
-            p.status
-        FROM payment AS p
-        WHERE p.orderId = LAST_INSERT_ID()
-    """)
-
-    success_message = "Payment successfully processed!"
-
-    return {"data": result, "message": success_message}
+    cur = execute("CALL CreatePayment(%s)", (data["orderId"],))
+    row = cur.fetchone()
+    data["id"] = row["paymentId"]  # Use the correct column name from the 
+    return data
 
 def get_all_payment():
     rv = fetchall(""" SELECT * FROM payment_view """)
