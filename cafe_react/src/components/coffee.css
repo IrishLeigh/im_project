@@ -1,3 +1,4 @@
+
 .coffeeline {
     background-color: #C7A17A;
     width: 100%;
@@ -29,6 +30,7 @@
 }
 .coffeePrice{
     font-weight: bold;
+    margin-right: 5px;
 }
 .imgCoffee{
     width: 20%;

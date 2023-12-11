@@ -29,7 +29,7 @@ const TheCoffee = (props) => {
           <span className='coffeeName'>{props.name} <br /></span>
           <span className='coffeeDesc'>{props.desc} <br /></span>
           <div className='coffeeline'></div>
-          <span className='coffeePrice'> Php{props.price}</span>
+          <span className='coffeePrice'>Php 156{props.price}</span>
           
           <TextField
             type="number"
@@ -38,8 +38,10 @@ const TheCoffee = (props) => {
             size="small"
             value={quantity}
             onChange={handleQuantityChange}
+            style={{backgroundColor:' rgba(255, 255, 255, 0.3)', width:'30%', borderRadius:'5px',transform:'translateX(40%)',marginTop:'3px'}}
           />
-           <Button variant="contained" color="primary" onClick={handleAddClick}>
+           <Button variant="contained" color="primary" onClick={handleAddClick} style={{color:'#A07344', backgroundColor:'#FFFFFF', width:'25%', marginLeft:'3px', transform:'translateX(75%)', fontWeight:'bold', fontFamily:'Georgia, Times New Roman, Times, serif'
+          ,marginTop:'3px'}}>
               Add
           </Button>
         </div>

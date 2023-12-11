@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+//import { useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import './product.css';
-import TheCoffee from './components/coffee';
+import TheCoffee from '../components/coffee';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,8 +14,9 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import MenuBar from './components/menuBar';
+import MenuBar from '../components/menuBar';
 import { Button } from '@mui/material';
+
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -157,7 +158,7 @@ const MenuCoffee = () => {
 
   return (
     <>
-      <AppBar position="static" sx={{ background: '#30271C' }}>
+       <AppBar position="static" sx={{ background: '#30271C', zIndex: 1 }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -222,13 +223,23 @@ const MenuCoffee = () => {
         </Container>
       </AppBar>
       <MenuBar />
-      <div className='menuBg' style={{ backgroundImage: 'url(/cafe_menu.png)' }}>
+      <div
+      className='menuBg'
+      style={{
+        backgroundImage: 'url(/cafe_menu.png)',
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+        minHeight: '140vh', 
+        paddingTop: '10px',
+        zIndex: 2, 
+      }}>
         <Container maxWidth="md" sx={{ mt: 2, ml: 2, marginLeft: "350px" }}>
           <div className='menuTitle'>
             <h2>Cafe Menu</h2>
             <div className='designline'></div>
           </div>
-          <form style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+
+          <form style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width:'105%'}}>
           <label className="inputLabel">
               Product ID:
               <input
@@ -269,9 +280,37 @@ const MenuCoffee = () => {
                 className="inputField"
               />
             </label>
-            <button type="submit">Add Menu Item</button>
-            <button type="submit">Update an Item</button>
+          <button
+          type="submit"
+          style={{
+            marginLeft: '-5px',
+            backgroundColor: '#FFFFFF',
+            color: '#30271C',
+            width: '31%',
+            height: '35px',
+            borderRadius: '10px',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif',
+            fontWeight:'bold',
+            transform:'translateX(-15%)',
+          }}
+          > Add Menu Item </button>
+<button
+  type="submit"
+  style={{
+    marginRight: '-69px',
+    marginLeft: '10px',
+    width: '30%',
+    height: '35px',
+    borderRadius: '10px',
+    backgroundColor: '#FFFFFF',
+    color: '#30271C',
+    fontFamily: 'Georgia, "Times New Roman", Times, serif',
+    fontWeight:'bold'
+  }}>
+  Update an Item
+</button>
           </form>
+          <div className='designline2'></div>
           <Grid container spacing={2}>
             {products.map((drink, index) => (
               <Grid item xs={12} sm={6} md={4} lg={6} key={index} className='item'>
@@ -291,7 +330,8 @@ const MenuCoffee = () => {
               </Grid>
             ))}
           </Grid>
-          <Button>ORDER NOW</Button>
+          <Button style={{ backgroundColor: '#FFFFFF', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif', width:'15%', height:'37px', fontWeight:'bold',
+        borderRadius:'50px', alignItems:'right', display:'flex', margin:'auto'}}>ORDER NOW</Button>
         </Container>
       </div>
     </>
