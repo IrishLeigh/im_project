@@ -217,16 +217,11 @@ def update_order(id, data):
     return data
 
 def update_orderStatus(id, data):
-    cur = execute("""CALL UpdateOrder(%s, %s, %s)""",
-                   (
-                    id,
-                   data["productId"],
-                   data["quantity"]
-                   ))
- 
+    cur = execute("""CALL UpdateOrderStatus(%s, %s)""", (id, data["status"]))
     row = cur.fetchone()
     data["id"] = row["orderId"]
     return data
+
 
 def delete_order(id):
   cur = execute("""CALL DeleteOrderWithDetails(%s)""", (id,))

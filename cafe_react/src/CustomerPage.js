@@ -12,7 +12,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuBar from './components/menuBar';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import {
   Paper,
   Table,
@@ -39,13 +39,19 @@ function ResponsiveAppBar() {
     tableNumber: '',
   });
 
+  const [editFormState, setEditFormState] = useState({
+    firstName: '',
+    lastName: '',
+    tableNumber: '',
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const { firstName, lastName, tableNumber } = formState;
-  
+
+    const { firstName, lastName, tableNumber } = isEditing ? editFormState : formState;
+
     const newCustomer = { fName: firstName, lName: lastName, tblNum: tableNumber };
-  
+
     try {
       if (isEditing) {
         // Make a PUT request to update the existing customer
@@ -65,7 +71,9 @@ function ResponsiveAppBar() {
         alert('Customer updated successfully');
         setCustomers((prevCustomers) =>
           prevCustomers.map((customer) =>
-            customer.customerId === editCustomer.customerId ? { ...customer, ...newCustomer } : customer
+            customer.customerId === editCustomer.customerId
+              ? { ...customer, ...newCustomer }
+              : customer
           )
         );
       } else {
@@ -99,14 +107,19 @@ function ResponsiveAppBar() {
       lastName: '',
       tableNumber: '',
     });
+    setEditFormState({
+      firstName: '',
+      lastName: '',
+      tableNumber: '',
+    });
     setIsEditing(false);
     setEditCustomer(null);
   };
 
-
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -136,7 +149,7 @@ function ResponsiveAppBar() {
       .catch((error) => {
         console.error('Error fetching data:', error);
       });
-  }, []);
+  }, [isEditing]);
 
   const handleDeleteConfirmation = (customerId) => {
     const confirmDelete = window.confirm('Are you sure you want to delete this customer?');
@@ -146,6 +159,7 @@ function ResponsiveAppBar() {
       deleteCustomer(customerId);
     }
   };
+
   const deleteCustomer = async (customerId) => {
     try {
       const response = await fetch(`/cafe/customer/${customerId}`, {
@@ -167,12 +181,13 @@ function ResponsiveAppBar() {
       console.error('Error deleting customer:', error);
     }
   };
+
   const handleEditCustomer = (customer) => {
     setIsEditing(true);
     setEditCustomer(customer);
 
     // Populate the form fields with customer information
-    setFormState({
+    setEditFormState({
       firstName: customer.fName,
       lastName: customer.lName,
       tableNumber: customer.tblNum,
@@ -301,8 +316,8 @@ function ResponsiveAppBar() {
             <input
               type="text"
               name="firstName"
-              value={isEditing ? formState.firstName : ''}
-              onChange={(e) => setFormState({ ...formState, firstName: e.target.value })}
+              value={isEditing ? editFormState.firstName : formState.firstName}
+              onChange={(e) => (isEditing ? setEditFormState({ ...editFormState, firstName: e.target.value }) : setFormState({ ...formState, firstName: e.target.value }))}
               required
               disabled={isEditing}
             />
@@ -312,8 +327,8 @@ function ResponsiveAppBar() {
             <input
               type="text"
               name="lastName"
-              value={isEditing ? formState.lastName : ''}
-              onChange={(e) => setFormState({ ...formState, lastName: e.target.value })}
+              value={isEditing ? editFormState.lastName : formState.lastName}
+              onChange={(e) => (isEditing ? setEditFormState({ ...editFormState, lastName: e.target.value }) : setFormState({ ...formState, lastName: e.target.value }))}
               required
               disabled={isEditing}
             />
@@ -323,18 +338,16 @@ function ResponsiveAppBar() {
             <input
               type="number"
               name="tableNumber"
-              value={isEditing ? formState.tableNumber : ''}
-              onChange={(e) => setFormState({ ...formState, tableNumber: e.target.value })}
+              value={isEditing ? editFormState.tableNumber : formState.tableNumber}
+              onChange={(e) => (isEditing ? setEditFormState({ ...editFormState, tableNumber: e.target.value }) : setFormState({ ...formState, tableNumber: e.target.value }))}
               required
-              
             />
           </label>
           
           <button type="submit">{isEditing ? 'Update Customer' : 'Add Customer'}</button>
         </form>
-
-        
       </div>
+
       {/* Input Custoemr Ends Here */}
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from orders import get_all_orders, get_order_by_id, create_order, update_order, delete_order
+from orders import get_all_orders, get_order_by_id, create_order, update_order, delete_order,update_orderStatus
 from payment import get_all_payment, get_payment_by_id, create_payment, update_payment, delete_payment
 from customer import get_all_customers, get_customer_by_id, create_customer, update_customer, delete_customer
 from products import get_all_products, get_product_by_id, create_product, update_product, delete_product
@@ -34,7 +34,7 @@ def orders():
     return jsonify(result)
 
 @app.route("/orders/<id>", methods=["GET", "PUT", "DELETE"])
-def users_by_id(id):
+def orders_by_id(id):
   if request.method == "PUT":
     data = request.get_json()
     result = update_order(id, data)
@@ -52,10 +52,10 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 @app.route("/orders/status/<id>", methods=["GET", "PUT", "DELETE"])
-def users_by_id(id):
+def orders_by_id_status(id):
   if request.method == "PUT":
     data = request.get_json()
-    result = update_order(id, data)
+    result = update_orderStatus(id, data)
   elif request.method == "DELETE":
     result = get_order_by_id(id)
     if result is not None:

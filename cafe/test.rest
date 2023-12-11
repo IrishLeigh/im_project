@@ -34,7 +34,7 @@ Content-Type: application/json
     "quantity": 1
 }
 ### Update an item's status
-PUT {{host}}/orders/status/29
+PUT {{host}}/orders/status/13
 Content-Type: application/json
 
 {
@@ -101,7 +101,7 @@ POST {{host}}/payment
 Content-Type: application/json
 
 {
-  "orderId": 3  
+  "orderId": 13
 }
 
 

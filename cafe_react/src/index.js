@@ -8,6 +8,7 @@ import ResponsiveAppBar from './CustomerPage';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'; 
 import MenuCoffee from './productList';
 import Orders from './OrdersPage'
+import Payment from './PaymentPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,6 +18,7 @@ root.render(
         <Route path="/Customers" element={<ResponsiveAppBar />} /> {/* Render ResponsiveAppBar on the landing page */}
         <Route path="/Menu/:customerId" element={<MenuCoffee />} />
         <Route path="/Orders" element={<Orders />} />
+        <Route path="/Payment" element={<Payment />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
