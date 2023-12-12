@@ -29,7 +29,7 @@ const TheCoffee = (props) => {
           <span className='coffeeName'>{props.name} <br /></span>
           <span className='coffeeDesc'>{props.desc} <br /></span>
           <div className='coffeeline'></div>
-          <span className='coffeePrice'>Php 156{props.price}</span>
+          <span className='coffeePrice'>Php{props.price}</span>
           
           <TextField
             type="number"
