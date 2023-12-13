@@ -133,64 +133,60 @@ function Payment() {
     setAnchorElUser(null);
   };
 
-  useEffect(() => {
-    window.scroll(0, 0);
-
-    fetch('/payment')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setCustomers(data); // Update the customers state as well
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
-
-  const handleDeleteConfirmation = (customerId) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this customer?');
-
-    if (confirmDelete) {
-      // User confirmed, proceed with the delete request
-      deleteCustomer(customerId);
-    }
-  };
-  const deleteCustomer = async (customerId) => {
+  const fetchData = async () => {
     try {
-      const response = await fetch(`/cafe/customer/${customerId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
+      const response = await fetch('/payment');
+  
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
-      // Assuming the delete was successful, update both states
-      alert('Customer deleted successfully');
-      setMenu(menu.filter((customer) => customer.customerId !== customerId));
-      setCustomers(customers.filter((customer) => customer.customerId !== customerId));
+  
+      const data = await response.json();
+      setCustomers(data);
     } catch (error) {
-      console.error('Error deleting customer:', error);
+      console.error('Error fetching data:', error);
     }
   };
-  const handleEditCustomer = (customer) => {
-    setIsEditing(true);
-    setEditCustomer(customer);
+  
+  useEffect(() => {
+    window.scroll(0, 0);
+  
+    fetchData(); // Fetch data on mount
+  
+    // You might want to add more dependencies based on your specific use case
+  }, []);
 
-    // Populate the form fields with customer information
-    setFormState({
-      firstName: customer.fName,
-      lastName: customer.lName,
-      tableNumber: customer.tblNum,
-    });
+  const handlePayNow = async (paymentId) => {
+    try {
+      const currentPaymentResponse = await fetch(`/payment/${paymentId}`);
+      const currentPaymentData = await currentPaymentResponse.json();
+  
+      if (currentPaymentData.status === 'Paid') {
+        alert('This payment has already been marked as Paid.');
+        return;
+      }
+      const response = await fetch(`/payment/${paymentId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          status: 'Paid',
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      // Assuming the update was successful, fetch data again to refresh the state
+      alert('Payment marked as Paid successfully');
+      fetchData();
+    } catch (error) {
+      console.error('Error marking payment as Paid:', error);
+    }
   };
+  
+  
 console.log(customers)
 
   return (
@@ -304,52 +300,9 @@ console.log(customers)
       </AppBar>
       <MenuBar/>
       {/* Table Here */}
-      
-      <Container maxWidth="md" sx={{ mt: 2, ml: 2 ,marginLeft:"350px"}}>
-        {/* Input Customer Here */}
-      <div>
-        <h1>Payment</h1>
-        <form onSubmit={handleSubmit}>
-          <label>
-            PaymentID:
-            <input
-              type="number"
-              name="paymentId"
-              value={isEditing ? formState.paymentId : ''}
-              onChange={(e) => setFormState({ ...formState, paymentId: e.target.value })}
-              required
-              disabled={isEditing}
-            />
-          </label>
-          <label>
-            OrderID:
-            <input
-              type="number"
-              name="orderId"
-              value={isEditing ? formState.orderId : ''}
-              onChange={(e) => setFormState({ ...formState, orderId: e.target.value })}
-              required
-              disabled={isEditing}
-            />
-          </label>
-          <label>
-            Amount:
-            <input
-              type="number"
-              name="amount"
-              value={isEditing ? formState.amount : ''}
-              onChange={(e) => setFormState({ ...formState, amount: e.target.value })}
-              required
-              
-            />
-          </label>
-          
-          <button type="submit">{isEditing ? 'Update Payment' : 'Add Payment'}</button>
-        </form>
-
-        
-      </div>
-      {/* Input Custoemr Ends Here */}
+      <br/>
+      <br/>
+      <Container maxWidth="md" sx={{ mt: 2, ml: 2 ,marginLeft:"350px",marginTop:'100px'}}>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -372,17 +325,8 @@ console.log(customers)
                 <TableCell align="center">{row.orderId}</TableCell>
                 <TableCell align="center">{row.amount}</TableCell>
                 <TableCell align="center">{row.status}</TableCell>
-                <TableCell component="th" scope="row" align="center">
-                  <div style={{ display: 'flex', align: 'center' }}>
-                      {row.fName} {row.lName}
-                    </div>
-                 
-                </TableCell>
-                <TableCell align="center">{row.tblNum}</TableCell>
                 <TableCell align="center">
-                  <Button onClick={() => handleEditCustomer(row)}>Edit</Button>
-                  <Button onClick={() => handleDeleteConfirmation(row.customerId)}>Delete</Button>
-                  <Button>Order</Button>
+                  <Button onClick={() => handlePayNow(row.paymentId)}>Pay Now</Button>
                 </TableCell>
               </TableRow>
             ))}
