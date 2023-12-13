@@ -9,12 +9,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import MenuCoffee from './productList';
 import Orders from './OrdersPage'
 import Payment from './PaymentPage';
+import MainLogin from './Login';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
+      <Route path="/" element={<MainLogin />} />
         <Route path="/Customers" element={<ResponsiveAppBar />} /> {/* Render ResponsiveAppBar on the landing page */}
         <Route path="/Menu/:customerId" element={<MenuCoffee />} />
         <Route path="/Orders" element={<Orders />} />
