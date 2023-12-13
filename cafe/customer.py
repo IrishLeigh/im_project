@@ -25,6 +25,4 @@ def update_customer(id, data):
 def delete_customer(id):
     cur = execute("""CALL delete_customer(%s)""", (id,))
     row = cur.fetchone()
-    if row is None:
-        return "Customer has been deleted successfully"
-    return "Unable to delete customer."
+    return row["message"]

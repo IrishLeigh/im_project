@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-//import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import './product.css';
-import TheCoffee from '../components/coffee';
+import TheCoffee from './components/coffee';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,7 +14,7 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import MenuBar from '../components/menuBar';
+import MenuBar from './components/menuBar';
 import { Button } from '@mui/material';
 
 
@@ -119,46 +119,9 @@ const MenuCoffee = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-
-  const drinkData = [
-//     {
-
-
-//       name: "Caffee Latte",
-//       desc: "Fresh brewed espresso and steamed milk",
-//       price: 120,
-//       image: "/caffe_latte.jpg", // Adjust the image path accordingly
-//     },
-//     {
-//       name: "Caffee Mocha",
-//       desc: "Espresso, chocolate, steamed milk, whipped cream",
-//       price: 120,
-//       image: "/caffe_mocha.jpg", // Adjust the image path accordingly
-//     },
-//     {
-//       name: "CAPPUCCINO",
-//       desc: "Espresso, and smoothed Layer of Foam",
-//       price: 120,
-//       image: "/cappuccino.jpg", // Adjust the image path accordingly
-//     },
-//     {
-//       name: "Caramel Macchiato",
-//       desc: "Espresso, steamed milk, vanilla, and caramel syrup",
-//       price: 120,
-//       image: "/caramel_macchiato.jpg", // Adjust the image path accordingly
-//     },
-//     {
-//       name: "Cold Brew",
-//       desc: "Smooth coffee brewed with cold water, served over ice and milk.",
-//       price: 120,
-//       image: "/cold_brew.jpg", // Adjust the image path accordingly
-//     },
-  ];
-
-
   return (
     <>
-       <AppBar position="static" sx={{ background: '#30271C', zIndex: 1 }}>
+       <AppBar position="fixed" sx={{ background: '#30271C', zIndex: 1 }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -177,7 +140,7 @@ const MenuCoffee = () => {
                 textDecoration: 'none',
               }}
             >
-              Menu
+              MENU
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

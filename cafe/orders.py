@@ -224,8 +224,6 @@ def update_orderStatus(id, data):
 
 
 def delete_order(id):
-  cur = execute("""CALL DeleteOrderWithDetails(%s)""", (id,))
+  cur = execute("""CALL DeleteOrderAndDetails(%s)""", (id,))
   row = cur.fetchone()
-  if row is None:
-    return True
-  return False
+  return row['message']

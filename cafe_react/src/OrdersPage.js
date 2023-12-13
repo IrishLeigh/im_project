@@ -24,7 +24,7 @@ import {
   Menu,
 } from '@mui/material';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = [ 'Logout'];
 
 function Orders() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -166,11 +166,36 @@ function Orders() {
       console.error('Error serving order:', error);
     }
   };
+  const handleDeleteOrder = (orderId) => {
+    // Display a confirmation dialog
+    const confirmDelete = window.confirm('Are you sure you want to delete this order?');
+
+    if (confirmDelete) {
+      // Call the delete API if the user confirms
+      fetch(`/orders/${orderId}`, {
+        method: 'DELETE',
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(() => {
+          // Assuming the delete was successful, update the state
+          alert('Order deleted successfully');
+          setOrders((prevOrders) => prevOrders.filter((order) => order.orderId !== orderId));
+        })
+        .catch((error) => {
+          console.error('Error deleting order:', error);
+        });
+    }
+  };
 
 console.log(orders)
   return (
     <Box sx={{ background: '#A07344', minHeight: '100vh' }}>
-      <AppBar position="static" sx={{ background: '#30271C' }}>
+      <AppBar position="fixed" sx={{ background: '#30271C' }}>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -376,7 +401,7 @@ console.log(orders)
               <TableCell align="center">{row.status}</TableCell>
               <TableCell align="center">
                 <Button onClick={() => handleEditOrder(row)}>Edit</Button>
-                <Button >Delete</Button>
+                <Button onClick={() => handleDeleteOrder(row.orderId)}>Delete</Button>
                 <Button onClick={() => handleServeNow(row.orderId)}>Serve Now</Button>
               </TableCell>
             </TableRow>

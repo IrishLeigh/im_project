@@ -44,7 +44,7 @@ Content-Type: application/json
 
 
 ### Delete an item
-DELETE {{host}}/orders/6
+DELETE {{host}}/orders/1
 Content-Type: application/json
 
 
@@ -87,7 +87,7 @@ Content-Type: application/json
 
 
 ### Delete an item
-DELETE {{host}}/cafe/menu/9
+DELETE {{host}}/cafe/customer/4
 Content-Type: application/json
 
 
@@ -103,7 +103,14 @@ Content-Type: application/json
 {
   "orderId": 13
 }
+### Update 
 
+PUT {{host}}/payment/7
+Content-Type: application/json
+
+{
+  "status": "Paid"
+}
 
 ### Read the list
 GET {{host}}/payment

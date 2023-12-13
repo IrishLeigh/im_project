@@ -43,9 +43,9 @@ def get_payment_by_id(paymentId):
     return rv
 
 def update_payment(paymentId, data):
-    cur = execute("CALL UpdatePaymentStatus (%s)", (data["paymentId"],))
+    cur = execute("""CALL update_payment(%s, %s)""", (paymentId, data["status"]))
     row = cur.fetchone()
-    data["paymentId"] = row["paymentId"]
+    data["paymentId"] = row["paymentId"]  # Assuming the returned
     return data
 
 def delete_payment(payment_id):
