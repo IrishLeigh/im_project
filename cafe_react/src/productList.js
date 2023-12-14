@@ -16,7 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import MenuBar from './components/menuBar';
 import { Button } from '@mui/material';
-
+import { Link } from 'react-router-dom';
 
 
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -293,8 +293,12 @@ const MenuCoffee = () => {
               </Grid>
             ))}
           </Grid>
-          <Button style={{ backgroundColor: '#FFFFFF', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif', width:'15%', height:'37px', fontWeight:'bold',
-        borderRadius:'50px', alignItems:'right', display:'flex', margin:'auto'}}>ORDER NOW</Button>
+          <Link to="/Orders">
+            <Button style={{ backgroundColor: '#FFFFFF', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif', width:'15%', height:'37px', fontWeight:'bold',
+          borderRadius:'50px', alignItems:'right', display:'flex', margin:'auto'}}>
+            ORDER NOW
+          </Button>
+          </Link>
         </Container>
       </div>
     </>

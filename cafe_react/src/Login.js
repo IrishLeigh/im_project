@@ -1,5 +1,6 @@
 import React from 'react';
 import { Paper, TextField, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const MainLogin = () => {
   return (
@@ -7,7 +8,7 @@ const MainLogin = () => {
       backgroundImage: 'url(/LoginBg.png)',
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
-      minHeight: '145vh', // Ensure the container covers the full height of the viewport
+      minHeight: '100vh', // Ensure the container covers the full height of the viewport
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -18,10 +19,10 @@ const MainLogin = () => {
         background: 'rgba(0, 0, 0, 0.4)',
         borderRadius: '35px',
         width: '25%',
-        height:'57vh',
+        height:'100%',
         fontFamily: 'Georgia, "Times New Roman", Times, serif',
         border: 'solid 5px #FFFFFF',
-        transform: 'translateY(15%)',
+        transform: 'translateY(50%)',
       }}>
 
         <h3 style={{
@@ -30,8 +31,8 @@ const MainLogin = () => {
           textTransform: 'uppercase',
           color: '#FFFFFF',
         }}>Welcome Admin!</h3>
-    <span style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize: '20px', display: 'block', textAlign: 'left',  color: '#FFFFFF', marginTop: '30px'}}>Username</span>
-
+    {/* <span style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize: '20px', display: 'block', textAlign: 'left',  color: '#FFFFFF', marginTop: '30px'}}>Username</span> */}
+{/* 
         <TextField
           id="uname"
           variant="outlined"
@@ -61,12 +62,12 @@ const MainLogin = () => {
             borderRadius: '5px',
             background: 'rgba(199, 161, 122, 0.9)',
           }}
-        />
-
+        /> */}
+      <Link to="/Customers">
         <Button style={{
           fontFamily: 'Georgia, "Times New Roman", Times, serif',
           marginTop: '28px',
-          marginBottom: '-10px',
+          marginBottom: '0px',
           fontSize: '23px',
           color: '#30271C',
           background: '#F7DBBE',
@@ -75,8 +76,8 @@ const MainLogin = () => {
           width: '40%',
           borderRadius: '5px',
           textTransform: 'lowercase',
-        }}>Log in</Button>
-
+        }}>Enter</Button>
+      </Link>
       </Paper>
     </div>
   );

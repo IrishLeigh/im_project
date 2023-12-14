@@ -151,28 +151,30 @@ function ResponsiveAppBar() {
       });
   }, [isEditing]);
 
-  const handleDeleteConfirmation = (customerId) => {
-    const confirmDelete = window.confirm('Are you sure you want to delete this customer?');
 
-    if (confirmDelete) {
-      // User confirmed, proceed with the delete request
-      deleteCustomer(customerId);
-    }
-  };
 
   const deleteCustomer = async (customerId) => {
     try {
+      const confirmDelete = window.confirm('Are you sure you want to delete this customer?');
+  
+      if (!confirmDelete) {
+        return; // If the user cancels the delete, do nothing
+      }
+  
       const response = await fetch(`/cafe/customer/${customerId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
       });
-
+  
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        // If the delete operation fails, alert the error message from the API
+        const errorMessage = await response.text();
+        alert(`Customer has existing orders. Check the status of the order`);
+        return;
       }
-
+  
       // Assuming the delete was successful, update both states
       alert('Customer deleted successfully');
       setMenu(menu.filter((customer) => customer.customerId !== customerId));
@@ -181,6 +183,7 @@ function ResponsiveAppBar() {
       console.error('Error deleting customer:', error);
     }
   };
+  
 
   const handleEditCustomer = (customer) => {
     setIsEditing(true);
@@ -371,7 +374,7 @@ function ResponsiveAppBar() {
               <TableCell align="center">{row.tblNum}</TableCell>
               <TableCell align="center">
                 <Button onClick={() => handleEditCustomer(row)}>Edit</Button>
-                <Button onClick={() => handleDeleteConfirmation(row.customerId)}>Delete</Button>
+                <Button onClick={() => deleteCustomer(row.customerId)}>Delete</Button>
                 <Link to={`/Menu/${row.customerId}`}>
                   <Button>Order</Button>
                 </Link>
