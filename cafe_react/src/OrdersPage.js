@@ -307,19 +307,20 @@ console.log(orders)
       
       <Container maxWidth="md" sx={{ mt: 2, ml: 2 ,marginLeft:"350px"}}>
         {/* Input Customer Here */}
-      <div>
-        <h1>Orders</h1>
+      <div style={{backgroundColor:'#A07344'}}>
+        <h1 style={{marginTop:'64px', textAlign:'center', marginBottom:'50px', transform:'translateY(35%)',  fontFamily: 'Georgia, "Times New Roman", Times, serif', color:'#FFFFFF'}}>Orders</h1>
         <form onSubmit={(e) => {
           e.preventDefault(); // Prevent default form submission
           // Handle your form submission logic here, you can add the logic to update the order
           // based on the form state or perform any other necessary actions.
         }}>
-          <label>
+          <label style={{color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'16px'}}>
             Customer Name:
             <input
               type="text"
               name="cName"
               value={`${formState.firstName} ${formState.lastName}`}
+              style= {{marginLeft:'5px',marginRight:'15px', color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif',fontSize:'14px'}}
               onChange={(e) => {
                 const [firstName, lastName] = e.target.value.split(' ');
                 setFormState({ ...formState, firstName, lastName });
@@ -328,39 +329,56 @@ console.log(orders)
               disabled={true}
             />
           </label>
-          <label>
+          <label style={{color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif',fontSize:'16px' }}>
             Table Number:
             <input
               type="number"
               name="tblNum"
               value={formState.tableNumber}  // Change here
+              style= {{marginLeft:'5px',marginRight:'15px', color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif', width:'6.5%', fontSize:'14px'}}
               onChange={(e) => setFormState({ ...formState, lastName: e.target.value })}
               required
               disabled={true}
             />
           </label>
-          <label>
+          <label style={{color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'16px'}}>
             Product ID:
             <input
               type="number"
               name="pid"
               value={formState.productId}  // Change here
+              style= {{marginLeft:'5px',marginRight:'15px', fontFamily: 'Georgia, "Times New Roman", Times, serif',width:'9%',fontSize:'14px'}}
               onChange={(e) => setFormState({ ...formState, productId: e.target.value })}
               required
             />
           </label>
-          <label>
-           Quantity
+          <label style={{color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif',fontSize:'16px' }}>
+           Quantity:
             <input
               type="number"
               value={formState.quantity}  // Change here
+              style= {{marginLeft:'5px',marginRight:'15px', fontFamily: 'Georgia, "Times New Roman", Times, serif',width:'9%',fontSize:'14px'}}
               onChange={(e) => setFormState({ ...formState, quantity: e.target.value })}
               required
               
             />
           </label>
           
-          <button onClick={handleUpdate}>Update Order</button>
+          <button onClick={handleUpdate}   style={{
+            backgroundColor: '#F7DBBE',
+            color: '#30271C',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif',
+            width: '13%',
+            height: '35px',
+            fontWeight: 'bold',
+            borderRadius: '50px',
+            border: '2px solid #30271C',
+            textAlign: 'center',
+            marginTop: '13px',
+            marginBottom: '13px',
+            marginLeft: 'auto',  
+            display: 'block',   
+          }}>Update Order</button>
 
         </form>
 
@@ -370,17 +388,17 @@ console.log(orders)
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 550 }} aria-label="simple table">
           <TableHead>
-            <TableRow sx={{ backgroundColor: '#C02147' }}>
-              <TableCell align="center" sx={{ color: 'white' }}>Order Id.</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Customer Name</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Table Number</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Time</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Date</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Product ID</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Product Name</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Quantity</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Status</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}></TableCell>
+            <TableRow sx={{ backgroundColor: '#30271C'}}>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Order Id.</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Customer Name</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Table Number</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Time</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Date</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Product ID</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Product Name</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Quantity</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif' }}>Status</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif' }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -392,17 +410,17 @@ console.log(orders)
                   {row.fName} {row.lName}
                 </div>
               </TableCell>
-              <TableCell align="center">{row.tblNum}</TableCell>
-              <TableCell align="center">{row.orderTime}</TableCell>
-              <TableCell align="center">{row.orderDate}</TableCell>
-              <TableCell align="center">{row.productId}</TableCell>
-              <TableCell align="center">{row.productName}</TableCell>
-              <TableCell align="center">{row.quantity}</TableCell>
-              <TableCell align="center">{row.status}</TableCell>
+              <TableCell align="center" style={{backgroundColor:'#C7A17A', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif',}}>{row.tblNum}</TableCell>
+              <TableCell align="center" style={{backgroundColor:'#C7A17A', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif',}}>{row.orderTime}</TableCell>
+              <TableCell align="center" style={{backgroundColor:'#C7A17A', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif',}}>{row.orderDate}</TableCell>
+              <TableCell align="center" style={{backgroundColor:'#C7A17A', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif',}}>{row.productId}</TableCell>
+              <TableCell align="center" style={{backgroundColor:'#C7A17A', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif',}}>{row.productName}</TableCell>
+              <TableCell align="center" style={{backgroundColor:'#C7A17A', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif',}}>{row.quantity}</TableCell>
+              <TableCell align="center" style={{backgroundColor:'#C7A17A', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif',}}>{row.status}</TableCell>
               <TableCell align="center">
-                <Button onClick={() => handleEditOrder(row)}>Edit</Button>
-                <Button onClick={() => handleDeleteOrder(row.orderId)}>Delete</Button>
-                <Button onClick={() => handleServeNow(row.orderId)}>Serve Now</Button>
+                <Button style={{color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif'}} onClick={() => handleEditOrder(row)}>Edit</Button>
+                <Button style={{color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif'}} onClick={() => handleDeleteOrder(row.orderId)}>Delete</Button>
+                <Button style={{color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif'}} onClick={() => handleServeNow(row.orderId)}>Serve Now</Button>
               </TableCell>
             </TableRow>
           ))}
@@ -412,9 +430,11 @@ console.log(orders)
       </TableContainer>
       <div style={{ border: '2px', borderColor: 'black', marginTop: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Button>Previous</Button>
-          <p style={{ marginLeft: 'auto', marginRight: 'auto' }}>Page 1 of 1</p>
-          <Button>Next</Button>
+          <Button style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', color:'#FFFFFF', 
+          fontSize:'14px', backgroundColor:'#30271C', fontWeight:'bold'}}>Previous</Button>
+          <p style={{ marginLeft: 'auto', marginRight: 'auto', color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'18px'}}>Page 1 of 1</p>
+          <Button style={{color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif', 
+          backgroundColor:'#FFFFFF', fontSize:'14px', fontWeight:'bold'}}>Next</Button>
         </div>
       </div>
       </Container>
