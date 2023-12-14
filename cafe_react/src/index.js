@@ -10,6 +10,7 @@ import MenuCoffee from './productList';
 import Orders from './OrdersPage'
 import Payment from './PaymentPage';
 import MainLogin from './Login';
+import Products from './Menu';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -18,6 +19,7 @@ root.render(
       <Routes>
       <Route path="/" element={<MainLogin />} />
         <Route path="/Customers" element={<ResponsiveAppBar />} /> {/* Render ResponsiveAppBar on the landing page */}
+        <Route path="/Menu" element={<Products />} />
         <Route path="/Menu/:customerId" element={<MenuCoffee />} />
         <Route path="/Orders" element={<Orders />} />
         <Route path="/Payment" element={<Payment />} />
