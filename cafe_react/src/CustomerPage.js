@@ -312,42 +312,59 @@ function ResponsiveAppBar() {
       <Container maxWidth="md" sx={{ mt: 2, ml: 2 ,marginLeft:"350px"}}>
         {/* Input Customer Here */}
       <div>
-        <h1>Customers</h1>
+        <h1 style={{marginTop:'64px', textAlign:'center', marginBottom:'50px', transform:'translateY(35%)',  fontFamily: 'Georgia, "Times New Roman", Times, serif', color:'#FFFFFF'}}>Customers</h1>
         <form onSubmit={handleSubmit}>
-          <label>
+          <label style={{color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'16px'}}>
             First Name:
             <input
               type="text"
               name="firstName"
+              style= {{marginLeft:'15px',marginRight:'15px', fontFamily: 'Georgia, "Times New Roman", Times, serif',fontSize:'14px',height:'20px'}}
               value={isEditing ? editFormState.firstName : formState.firstName}
               onChange={(e) => (isEditing ? setEditFormState({ ...editFormState, firstName: e.target.value }) : setFormState({ ...formState, firstName: e.target.value }))}
               required
               disabled={isEditing}
             />
           </label>
-          <label>
+          <label style={{color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'16px'}}>
             Last Name:
             <input
               type="text"
               name="lastName"
+              style= {{marginLeft:'15px',marginRight:'15px', fontFamily: 'Georgia, "Times New Roman", Times, serif',fontSize:'14px', height:'20px'}}
               value={isEditing ? editFormState.lastName : formState.lastName}
               onChange={(e) => (isEditing ? setEditFormState({ ...editFormState, lastName: e.target.value }) : setFormState({ ...formState, lastName: e.target.value }))}
               required
               disabled={isEditing}
             />
           </label>
-          <label>
+          <label style={{color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'16px',}}>
             Table Number:
             <input
               type="number"
               name="tableNumber"
+              style= {{marginLeft:'15px',marginRight:'15px', fontFamily: 'Georgia, "Times New Roman", Times, serif',fontSize:'14px',height:'20px'}}
               value={isEditing ? editFormState.tableNumber : formState.tableNumber}
               onChange={(e) => (isEditing ? setEditFormState({ ...editFormState, tableNumber: e.target.value }) : setFormState({ ...formState, tableNumber: e.target.value }))}
               required
             />
           </label>
           
-          <button type="submit">{isEditing ? 'Update Customer' : 'Add Customer'}</button>
+          <button type="submit" style={{
+            backgroundColor: '#F7DBBE',
+            color: '#30271C',
+            fontFamily: 'Georgia, "Times New Roman", Times, serif',
+            width: '15%',
+            height: '35px',
+            fontWeight: 'bold',
+            borderRadius: '50px',
+            border: '2px solid #30271C',
+            textAlign: 'center',
+            marginTop: '13px',
+            marginBottom: '13px',
+            marginLeft: 'auto',  
+            display: 'block',   
+          }}>{isEditing ? 'Update Customer' : 'Add Customer'}</button>
         </form>
       </div>
 
@@ -355,28 +372,28 @@ function ResponsiveAppBar() {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
-            <TableRow sx={{ backgroundColor: '#C02147' }}>
-              <TableCell align="center" sx={{ color: 'white' }}>Customer Id.</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Customer Name</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}>Table Number</TableCell>
-              <TableCell align="center" sx={{ color: 'white' }}></TableCell>
+            <TableRow sx={{ backgroundColor: '#30271C' }}>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'16px' }}>Customer Id.</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'16px' }}>Customer Name</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'16px' }}>Table Number</TableCell>
+              <TableCell align="center" sx={{ color: 'white', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'16px' }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
           {menu.map((row, key) => (
             <TableRow key={row.customerId}>
-              <TableCell align="center">{row.customerId}</TableCell>
+              <TableCell align="center" style={{backgroundColor:'#C7A17A', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif',}}>{row.customerId}</TableCell>
               <TableCell component="th" scope="row" align="center">
-                <div style={{ display: 'flex', align: 'center' }}>
+                <div style={{ display: 'flex', align: 'center', backgroundColor:'#C7A17A', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif', }}>
                   {row.fName} {row.lName}
                 </div>
               </TableCell>
-              <TableCell align="center">{row.tblNum}</TableCell>
-              <TableCell align="center">
-                <Button onClick={() => handleEditCustomer(row)}>Edit</Button>
-                <Button onClick={() => deleteCustomer(row.customerId)}>Delete</Button>
+              <TableCell align="center"  style={{backgroundColor:'#C7A17A', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif',}}>{row.tblNum}</TableCell>
+              <TableCell align="center"  style={{backgroundColor:'#C7A17A', color:'#30271C',}}>
+                <Button style={{color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif'}} onClick={() => handleEditCustomer(row)}>Edit</Button>
+                <Button style={{color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif'}} onClick={() => deleteCustomer(row.customerId)}>Delete</Button>
                 <Link to={`/Menu/${row.customerId}`}>
-                  <Button>Order</Button>
+                  <Button style={{color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif'}}>Order</Button>
                 </Link>
               </TableCell>
             </TableRow>
@@ -387,9 +404,11 @@ function ResponsiveAppBar() {
       </TableContainer>
       <div style={{ border: '2px', borderColor: 'black', marginTop: '20px' }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Button>Previous</Button>
-          <p style={{ marginLeft: 'auto', marginRight: 'auto' }}>Page 1 of 1</p>
-          <Button>Next</Button>
+          <Button style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', color:'#FFFFFF', 
+          fontSize:'14px', backgroundColor:'#30271C', fontWeight:'bold'}}>Previous</Button>
+          <p style={{ marginLeft: 'auto', marginRight: 'auto', color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'18px'}}>Page 1 of 1</p>
+          <Button style={{color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif', 
+          backgroundColor:'#FFFFFF', fontSize:'14px', fontWeight:'bold'}}>Next</Button>
         </div>
       </div>
       </Container>
