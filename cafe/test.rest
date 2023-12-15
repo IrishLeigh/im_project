@@ -6,7 +6,7 @@ POST {{host}}/orders
 Content-Type: application/json
 
 {
-    "customerId": 4,
+    "customerId": 15,
     "orderDate": "04/12/2023",
     "orderTime": "11:35",
     "productId": 2,
@@ -21,12 +21,12 @@ Content-Type: application/json
 
 ### Read a single item by id
 ###Read a single OrderId with multiple products
-GET {{host}}/orders/1
+GET {{host}}/orders/54
 Content-Type: application/json
 
 
 ### Update an item
-PUT {{host}}/orders/29
+PUT {{host}}/orders/54
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
     "quantity": 1
 }
 ### Update an item's status
-PUT {{host}}/orders/status/13
+PUT {{host}}/orders/status/54
 Content-Type: application/json
 
 {
@@ -44,7 +44,7 @@ Content-Type: application/json
 
 
 ### Delete an item
-DELETE {{host}}/orders/1
+DELETE {{host}}/orders/59
 Content-Type: application/json
 
 
@@ -57,24 +57,24 @@ Content-Type: application/json
 
 {
     
-    "fName": "Irish",
-    "lName": "San Juan",
+    "fName": "Test",
+    "lName": "Test Juan",
     "tblNum": "4"
   }
 
 
 ### Read the list
-GET {{host}}/cafe/customer
+GET {{host}}/cafe/menu
 Content-Type: application/json
 
 
 ### Read a single item by id
-GET {{host}}/cafe/menu/4
+GET {{host}}/cafe/customer/15
 Content-Type: application/json
 
 
 ### Update an item
-PUT {{host}}/cafe/menu/7
+PUT {{host}}/cafe/customer/15
 Content-Type: application/json
 
 {
@@ -87,7 +87,7 @@ Content-Type: application/json
 
 
 ### Delete an item
-DELETE {{host}}/cafe/customer/4
+DELETE {{host}}/cafe/customer/15
 Content-Type: application/json
 
 
@@ -105,7 +105,7 @@ Content-Type: application/json
 }
 ### Update 
 
-PUT {{host}}/payment/1
+PUT {{host}}/payment/33
 Content-Type: application/json
 
 {
@@ -118,5 +118,5 @@ Content-Type: application/json
 
 
 ### Read a single item by id
-GET {{host}}/payment/1
+GET {{host}}/payment/59
 Content-Type: application/json

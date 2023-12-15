@@ -210,7 +210,7 @@ console.log(customers)
                 textDecoration: 'none',
               }}
             >
-              CUSTOMERS
+              PAYMENT
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -306,7 +306,7 @@ console.log(customers)
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
-            <TableRow sx={{ backgroundColor: '#C02147' }}>
+            <TableRow sx={{ backgroundColor: '#30271C' }}>
               <TableCell align="center" sx={{ color: 'white' }}>Payment Id.</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}>Customer Id.</TableCell>
               <TableCell align="center" sx={{ color: 'white' }}>Table Number</TableCell>

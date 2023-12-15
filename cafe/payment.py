@@ -49,9 +49,7 @@ def update_payment(paymentId, data):
     return data
 
 def delete_payment(payment_id):
-    for index, payment_entry in enumerate(payment):
-        if payment_entry["id"] == int(payment_id):
-            # @TODO replace this with a database call (DELETE)
-            payment.pop(index)
-            return True
-    return False
+    cur = execute("""CALL update_payment(%s, %s)""", (paymentId, data["status"]))
+    row = cur.fetchone()
+    data["paymentId"] = row["paymentId"]  # Assuming the returned
+    return data

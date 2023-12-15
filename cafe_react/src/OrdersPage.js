@@ -126,11 +126,13 @@ function Orders() {
   
       // Clear the form and reset editing state
       setFormState({
+        firstName: '',
+        lastName: '',
+        tableNumber: '',
         productId: '',
         productName: '',
         quantity: '',
         orderTime: '',
-        orderDate: '',
         status: '',
       });
       setEditOrder(null);
@@ -138,6 +140,7 @@ function Orders() {
       console.error('Error handling update:', error);
     }
   };
+  
   const handleServeNow = async (orderId) => {
     try {
       // Make a PUT request to update the status to "Served"
@@ -428,15 +431,7 @@ console.log(orders)
           </TableBody>
         </Table>
       </TableContainer>
-      <div style={{ border: '2px', borderColor: 'black', marginTop: '20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <Button style={{ fontFamily: 'Georgia, "Times New Roman", Times, serif', color:'#FFFFFF', 
-          fontSize:'14px', backgroundColor:'#30271C', fontWeight:'bold'}}>Previous</Button>
-          <p style={{ marginLeft: 'auto', marginRight: 'auto', color:'#FFFFFF', fontFamily: 'Georgia, "Times New Roman", Times, serif', fontSize:'18px'}}>Page 1 of 1</p>
-          <Button style={{color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif', 
-          backgroundColor:'#FFFFFF', fontSize:'14px', fontWeight:'bold'}}>Next</Button>
-        </div>
-      </div>
+      
       </Container>
       {/* Table Ends Here */}
     </Box>

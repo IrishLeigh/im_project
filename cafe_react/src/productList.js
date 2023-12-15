@@ -83,33 +83,38 @@ const MenuCoffee = () => {
 
   const handleAddToOrder = async (data) => {
     try {
-      console.log('Data before sending:', data);
-      const apiUrl = '/orders';
+      if (data.quantity > 0) {
+        console.log('Data before sending:', data);
+        const apiUrl = '/orders';
   
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          customerId: customerId,  // Fix property name
-          orderDate: new Date().toISOString().split('T')[0],
-          orderTime: new Date().toLocaleTimeString(),
-          productId: data.productId,  // Fix property name
-          quantity: data.quantity,
-        }),
-      });
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            customerId: customerId,
+            orderDate: new Date().toISOString().split('T')[0],
+            orderTime: new Date().toLocaleTimeString(),
+            productId: data.productId,
+            quantity: data.quantity,
+          }),
+        });
   
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+  
+        const responseData = await response.json();
+        alert('Item added to order successfully:', responseData);
+      } else {
+        alert('Quantity must be greater than 0. Item not added to order.');
       }
-  
-      const responseData = await response.json();
-      alert('Item added to order successfully:', responseData);
     } catch (error) {
       console.log('Error adding item to order:', error);
     }
   };
+  
   
 
   const handleOpenNavMenu = (event) => {
@@ -202,7 +207,7 @@ const MenuCoffee = () => {
             <div className='designline'></div>
           </div>
 
-          <form style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width:'105%'}}>
+          {/* <form style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width:'105%'}}>
           <label className="inputLabel">
               Product ID:
               <input
@@ -273,7 +278,7 @@ const MenuCoffee = () => {
   Update an Item
 </button>
           </form>
-          <div className='designline2'></div>
+          <div className='designline2'></div> */}
           <Grid container spacing={2}>
             {products.map((drink, index) => (
               <Grid item xs={12} sm={6} md={4} lg={6} key={index} className='item'>
@@ -299,6 +304,10 @@ const MenuCoffee = () => {
             ORDER NOW
           </Button>
           </Link>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
         </Container>
       </div>
     </>

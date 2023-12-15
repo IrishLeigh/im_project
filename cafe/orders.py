@@ -179,7 +179,7 @@ def create_order(data):
 
     # Assuming you have a view or another way to retrieve the created order details
     row = cur.fetchone()
-    data["id"] = row["orderId"]
+    data["orderId"] = row["orderId"]
     return data
 
     #success_message = "Order successfully created!"
