@@ -143,6 +143,16 @@ function Orders() {
   
   const handleServeNow = async (orderId) => {
     try {
+      // Find the order with the given orderId
+      const orderToServe = orders.find((order) => order.orderId === orderId);
+  
+      // Check if the order is already served
+      if (orderToServe && orderToServe.status === 'Served') {
+        // Display a message or prevent serving the order again
+        alert('This order is already served.');
+        return;
+      }
+  
       // Make a PUT request to update the status to "Served"
       const response = await fetch(`/orders/status/${orderId}`, {
         method: 'PUT',
@@ -153,11 +163,11 @@ function Orders() {
           status: 'Served',
         }),
       });
-
+  
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-
+  
       // Assuming the update was successful, update the state
       alert('Order served successfully');
       setOrders((prevOrders) =>
@@ -170,9 +180,19 @@ function Orders() {
     }
   };
   const handleDeleteOrder = (orderId) => {
+    // Find the order with the given orderId
+    const orderToDelete = orders.find((order) => order.orderId === orderId);
+  
+    // Check if the order status is 'Served'
+    if (orderToDelete && orderToDelete.status === 'Served') {
+      // Display a message or prevent the deletion
+      alert('Cannot delete a served order.');
+      return;
+    }
+  
     // Display a confirmation dialog
     const confirmDelete = window.confirm('Are you sure you want to delete this order?');
-
+  
     if (confirmDelete) {
       // Call the delete API if the user confirms
       fetch(`/orders/${orderId}`, {
@@ -194,6 +214,7 @@ function Orders() {
         });
     }
   };
+  
 
 console.log(orders)
   return (
@@ -405,7 +426,10 @@ console.log(orders)
             </TableRow>
           </TableHead>
           <TableBody>
-          {orders.map((row, key) => (
+          {orders
+          .filter(row => !row.isPaid) // Filter rows where isPaid is not TRUE
+          .sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate)) // Sort in descending order based on order date (most recent first)
+          .map((row, key) => (
             <TableRow key={row.orderId}>
               <TableCell align="center">{row.orderId}</TableCell>
               <TableCell component="th" scope="row" align="center">

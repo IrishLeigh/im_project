@@ -317,7 +317,9 @@ console.log(customers)
             </TableRow>
           </TableHead>
           <TableBody>
-            {customers.map((row,key) => (
+          {customers
+            .filter(row => row.status === "Pending") // Filter rows where Status is "Pending"
+            .map((row, key) => (
               <TableRow key={row.paymentId}>
                 <TableCell align="center">{row.paymentId}</TableCell>
                 <TableCell align="center">{row.customerId}</TableCell>

@@ -380,7 +380,9 @@ function ResponsiveAppBar() {
             </TableRow>
           </TableHead>
           <TableBody>
-          {menu.map((row, key) => (
+          {menu
+            .filter(row => !row.isPaid) // Filter rows where isPaid is not TRUE
+            .map((row, key) => (
             <TableRow key={row.customerId}>
               <TableCell align="center" style={{backgroundColor:'#C7A17A', color:'#30271C', fontFamily: 'Georgia, "Times New Roman", Times, serif',}}>{row.customerId}</TableCell>
               <TableCell component="th" scope="row" align="center">

@@ -202,7 +202,7 @@ const Products = () => {
             <div className='designline'></div>
           </div>
 
-          <form style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width:'105%'}}>
+          {/* <form style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width:'105%'}}>
           <label className="inputLabel">
               Product ID:
               <input
@@ -273,7 +273,7 @@ const Products = () => {
   Update an Item
 </button>
           </form>
-          <div className='designline2'></div>
+          <div className='designline2'></div> */}
           <Grid container spacing={2}>
             {products.map((drink, index) => (
               <Grid item xs={12} sm={6} md={4} lg={6} key={index} className='item'>

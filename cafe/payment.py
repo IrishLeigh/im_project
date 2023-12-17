@@ -1,32 +1,5 @@
 from database import fetchall, fetchone, execute
 
-# assume this is from a database
-payment = [
-    {
-        "paymentId": 1,
-        "orderId": 1,
-        "amount": 39
-    },
-    {
-        "paymentId": 2,
-        "orderId": 2,
-        "amount": 39
-    },
-    
-]
-
-""""
-CREATE VIEW payment_view AS
-SELECT
-  payment.id,
-  payment.paymentId,
-  order.orderId,
-  payment.amount
-FROM
-  payment
-INNER JOIN
-  order ON payment.orderId = order.id;
-"""
 
 def create_payment(data):
     cur = execute("CALL CreatePayment(%s)", (data["orderId"],))
